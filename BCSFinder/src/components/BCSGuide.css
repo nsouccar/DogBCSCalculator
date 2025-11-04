@@ -1,0 +1,266 @@
+.bcs-guide {
+  animation: fadeIn 0.3s ease-in;
+  padding-bottom: 80px;
+}
+
+.guide-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 8px;
+  width: auto;
+  text-align: left;
+  box-shadow: none;
+}
+
+.close-button:active {
+  transform: scale(0.98);
+}
+
+.guide-header h2 {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.guide-header p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.guide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.guide-intro {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.guide-intro h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--text-color);
+}
+
+.guide-intro p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.guide-tips {
+  background-color: var(--bg-color);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.guide-tips h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.guide-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.guide-tips li {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin-bottom: 6px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.guide-tips li::before {
+  content: '•';
+  position: absolute;
+  left: 8px;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.score-reference {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.score-card {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.score-card.ideal {
+  border-left-color: var(--primary-color);
+  background: linear-gradient(to right, rgba(76, 175, 80, 0.05), var(--card-bg));
+}
+
+.score-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.score-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.score-badge.score-1,
+.score-badge.score-2,
+.score-badge.score-3 {
+  background-color: #FF9800;
+  color: white;
+}
+
+.score-badge.score-4,
+.score-badge.score-5,
+.score-badge.score-6 {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.score-badge.score-7,
+.score-badge.score-8,
+.score-badge.score-9 {
+  background-color: #f44336;
+  color: white;
+}
+
+.score-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.score-info h3 {
+  font-size: 16px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.ideal-badge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.score-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin-bottom: 12px;
+}
+
+.visual-indicator {
+  font-size: 13px;
+  color: var(--text-light);
+  padding: 8px 12px;
+  background-color: var(--bg-color);
+  border-radius: 6px;
+}
+
+.visual-indicator strong {
+  color: var(--text-color);
+}
+
+.guide-footer-note {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--secondary-color);
+}
+
+.guide-footer-note h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: var(--secondary-color);
+}
+
+.guide-footer-note p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.guide-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .guide-header h2 {
+    font-size: 28px;
+  }
+
+  .guide-header p {
+    font-size: 16px;
+  }
+
+  .guide-intro h3 {
+    font-size: 20px;
+  }
+
+  .guide-intro p {
+    font-size: 15px;
+  }
+
+  .score-info h3 {
+    font-size: 18px;
+  }
+
+  .score-description {
+    font-size: 15px;
+  }
+}
