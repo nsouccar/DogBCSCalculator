@@ -17,77 +17,108 @@
 }
 
 .assessment-header {
-  background: var(--card-bg);
-  padding: 16px;
-  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 184, 77, 0.05) 100%);
+  padding: 24px;
+  border-radius: 20px;
   box-shadow: var(--shadow);
+  border: 2px solid rgba(255, 107, 53, 0.1);
 }
 
 .back-button {
   background: transparent;
   border: none;
-  color: var(--text-color);
-  padding: 8px 0;
-  font-size: 14px;
-  font-weight: 500;
+  color: var(--primary-color);
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   width: auto;
   text-align: left;
   box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  color: var(--primary-dark);
+  transform: translateX(-4px);
 }
 
 .back-button:active {
-  transform: scale(0.98);
+  transform: translateX(-2px);
 }
 
 .progress-bar {
-  height: 8px;
-  background-color: var(--border-color);
-  border-radius: 4px;
+  height: 10px;
+  background-color: rgba(255, 107, 53, 0.1);
+  border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  transition: width 0.3s ease;
-  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 20px;
 }
 
 .progress-text {
-  font-size: 12px;
-  color: var(--text-light);
+  font-size: 13px;
+  color: var(--primary-color);
+  text-align: center;
+  font-weight: 600;
+}
+
+.images-preview-assessment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.preview-small {
+  background: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 3px solid var(--border-color);
+}
+
+.view-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 184, 77, 0.05) 100%);
+  margin: 0;
   text-align: center;
 }
 
-.image-preview {
-  background: var(--card-bg);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  max-height: 200px;
-}
-
-.image-preview img {
+.preview-small img {
   width: 100%;
-  height: 100%;
+  height: 150px;
   object-fit: cover;
+  display: block;
 }
 
 .question-container {
   background: var(--card-bg);
-  padding: 24px;
-  border-radius: 12px;
+  padding: 32px;
+  border-radius: 24px;
   box-shadow: var(--shadow);
+  border: 2px solid rgba(255, 107, 53, 0.1);
 }
 
 .question-container h2 {
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-size: 22px;
+  margin-bottom: 24px;
   color: var(--text-color);
   line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 .options-list {
@@ -99,29 +130,33 @@
 .option-button {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: var(--bg-color);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(255, 249, 245, 0.8);
+  border: 3px solid var(--border-color);
+  border-radius: 20px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   color: var(--text-color);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .option-button:hover {
   border-color: var(--primary-color);
   background: var(--card-bg);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+  transform: translateY(-2px);
 }
 
 .option-button.selected {
   border-color: var(--primary-color);
-  background: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
   color: white;
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+  transform: scale(1.02);
 }
 
 .option-button:active {
@@ -130,27 +165,29 @@
 
 .option-number {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: white;
   border-radius: 50%;
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--text-color);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .option-button.selected .option-number {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
   color: white;
+  box-shadow: none;
 }
 
 .option-label {
   flex: 1;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 @media (min-width: 768px) {

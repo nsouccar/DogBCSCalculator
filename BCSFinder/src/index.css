@@ -5,22 +5,27 @@
 }
 
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 400;
 
-  --primary-color: #4CAF50;
-  --primary-dark: #45a049;
-  --secondary-color: #2196F3;
-  --danger-color: #f44336;
-  --text-color: #333;
-  --text-light: #666;
-  --border-color: #ddd;
-  --bg-color: #f5f5f5;
-  --card-bg: #ffffff;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Spot & Tango inspired warm color palette */
+  --primary-color: #FF6B35;
+  --primary-dark: #E85A2A;
+  --primary-light: #FF8C5F;
+  --secondary-color: #FFB84D;
+  --accent-color: #4ECDC4;
+  --success-color: #6BCF7F;
+  --danger-color: #FF5252;
+  --text-color: #2D3748;
+  --text-light: #718096;
+  --border-color: #E2E8F0;
+  --bg-color: #FFF9F5;
+  --card-bg: #FFFFFF;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -42,53 +47,74 @@ body {
 }
 
 button {
-  border-radius: 12px;
+  border-radius: 24px;
   border: none;
-  padding: 16px 24px;
-  font-size: 16px;
+  padding: 18px 32px;
+  font-size: 17px;
   font-weight: 600;
   font-family: inherit;
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   touch-action: manipulation;
-  min-height: 48px;
+  min-height: 56px;
   width: 100%;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  letter-spacing: 0.3px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
 button:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
 }
 
 button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
 button.secondary {
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #FFC870 100%);
+  box-shadow: 0 4px 12px rgba(255, 184, 77, 0.3);
+  color: var(--text-color);
+}
+
+button.secondary:hover {
+  box-shadow: 0 6px 20px rgba(255, 184, 77, 0.4);
 }
 
 button.outline {
-  background-color: transparent;
-  border: 2px solid var(--primary-color);
+  background: transparent;
+  border: 3px solid var(--primary-color);
   color: var(--primary-color);
+  box-shadow: none;
+}
+
+button.outline:hover {
+  background: rgba(255, 107, 53, 0.05);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
 }
 
 input, select, textarea {
   font-family: inherit;
   font-size: 16px;
-  padding: 12px;
+  padding: 14px 18px;
   border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 16px;
   width: 100%;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: var(--card-bg);
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }

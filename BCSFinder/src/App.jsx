@@ -7,13 +7,15 @@ import BCSResult from './components/BCSResult'
 import BCSGuide from './components/BCSGuide'
 
 function App() {
-  const [step, setStep] = useState('welcome') // welcome, camera, choice, ai-analysis, assessment, result, guide
-  const [capturedImage, setCapturedImage] = useState(null)
+  const [step, setStep] = useState('welcome') // welcome, photo-guide, camera, choice, ai-analysis, assessment, result, guide
+  const [sideImage, setSideImage] = useState(null)
+  const [topImage, setTopImage] = useState(null)
   const [bcsScore, setBcsScore] = useState(null)
   const [aiPrediction, setAiPrediction] = useState(null)
 
-  const handleImageCapture = (imageData) => {
-    setCapturedImage(imageData)
+  const handleImagesCapture = (side, top) => {
+    setSideImage(side)
+    setTopImage(top)
     setStep('choice')
   }
 
@@ -26,7 +28,8 @@ function App() {
   }
 
   const handleReset = () => {
-    setCapturedImage(null)
+    setSideImage(null)
+    setTopImage(null)
     setBcsScore(null)
     setAiPrediction(null)
     setStep('welcome')
@@ -34,6 +37,10 @@ function App() {
 
   const showGuide = () => {
     setStep('guide')
+  }
+
+  const startPhotoCapture = () => {
+    setStep('photo-guide')
   }
 
   return (
@@ -54,8 +61,8 @@ function App() {
                 Take a photo and let our AI analyze your dog's body condition.
               </p>
               <div className="button-group">
-                <button onClick={() => setStep('camera')} className="primary-button">
-                  Start AI Assessment
+                <button onClick={startPhotoCapture} className="primary-button">
+                  Start Assessment
                 </button>
                 <button onClick={showGuide} className="outline">
                   View BCS Guide
@@ -65,9 +72,45 @@ function App() {
           </div>
         )}
 
+        {step === 'photo-guide' && (
+          <div className="welcome-screen">
+            <div className="welcome-card">
+              <div className="dog-icon">📸</div>
+              <h2>Two Photos Needed</h2>
+              <p>
+                For the most accurate assessment, we need photos from two angles:
+              </p>
+              <div className="photo-guide-info">
+                <div className="guide-step">
+                  <div className="step-number">1</div>
+                  <div className="step-content">
+                    <h3>Side Profile</h3>
+                    <p>Stand to the side of your dog and capture their full body from the side</p>
+                  </div>
+                </div>
+                <div className="guide-step">
+                  <div className="step-number">2</div>
+                  <div className="step-content">
+                    <h3>Top View</h3>
+                    <p>Stand above your dog and capture them from directly overhead</p>
+                  </div>
+                </div>
+              </div>
+              <div className="button-group">
+                <button onClick={() => setStep('camera')} className="primary-button">
+                  Continue to Camera
+                </button>
+                <button onClick={handleReset} className="outline">
+                  Go Back
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {step === 'camera' && (
           <CameraCapture
-            onCapture={handleImageCapture}
+            onCapture={handleImagesCapture}
             onCancel={handleReset}
           />
         )}
@@ -76,10 +119,17 @@ function App() {
           <div className="welcome-screen">
             <div className="welcome-card">
               <h2>Choose Assessment Method</h2>
-              <div className="image-preview-small">
-                <img src={capturedImage} alt="Your dog" style={{ borderRadius: '12px', marginBottom: '20px' }} />
+              <div className="images-preview-grid">
+                <div className="preview-item">
+                  <p className="preview-label">Side View</p>
+                  <img src={sideImage} alt="Side view" style={{ borderRadius: '12px', width: '100%', marginBottom: '8px' }} />
+                </div>
+                <div className="preview-item">
+                  <p className="preview-label">Top View</p>
+                  <img src={topImage} alt="Top view" style={{ borderRadius: '12px', width: '100%', marginBottom: '8px' }} />
+                </div>
               </div>
-              <p style={{ marginBottom: '24px' }}>
+              <p style={{ marginBottom: '24px', marginTop: '20px' }}>
                 How would you like to assess your dog's BCS?
               </p>
               <div className="button-group">
@@ -89,8 +139,8 @@ function App() {
                 <button onClick={() => setStep('assessment')} className="secondary">
                   📋 Manual Assessment
                 </button>
-                <button onClick={() => setStep('camera')} className="outline">
-                  Retake Photo
+                <button onClick={() => setStep('photo-guide')} className="outline">
+                  Retake Photos
                 </button>
               </div>
             </div>
@@ -99,25 +149,28 @@ function App() {
 
         {step === 'ai-analysis' && (
           <AIAnalysis
-            image={capturedImage}
+            sideImage={sideImage}
+            topImage={topImage}
             onComplete={handleAssessmentComplete}
-            onRetake={() => setStep('camera')}
+            onRetake={() => setStep('photo-guide')}
             onManualAssessment={() => setStep('assessment')}
           />
         )}
 
         {step === 'assessment' && (
           <BCSAssessment
-            image={capturedImage}
+            sideImage={sideImage}
+            topImage={topImage}
             onComplete={handleAssessmentComplete}
-            onRetake={() => setStep('camera')}
+            onRetake={() => setStep('photo-guide')}
           />
         )}
 
         {step === 'result' && (
           <BCSResult
             score={bcsScore}
-            image={capturedImage}
+            sideImage={sideImage}
+            topImage={topImage}
             aiPrediction={aiPrediction}
             onReset={handleReset}
             onViewGuide={showGuide}

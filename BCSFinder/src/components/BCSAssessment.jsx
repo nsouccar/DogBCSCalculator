@@ -37,7 +37,7 @@ const assessmentQuestions = [
   }
 ]
 
-const BCSAssessment = ({ image, onComplete, onRetake }) => {
+const BCSAssessment = ({ sideImage, topImage, onComplete, onRetake }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
 
@@ -80,8 +80,15 @@ const BCSAssessment = ({ image, onComplete, onRetake }) => {
         </p>
       </div>
 
-      <div className="image-preview">
-        <img src={image} alt="Your dog" />
+      <div className="images-preview-assessment">
+        <div className="preview-small">
+          <p className="view-label">Side View</p>
+          <img src={sideImage} alt="Side view" />
+        </div>
+        <div className="preview-small">
+          <p className="view-label">Top View</p>
+          <img src={topImage} alt="Top view" />
+        </div>
       </div>
 
       <div className="question-container">

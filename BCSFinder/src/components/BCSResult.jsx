@@ -56,7 +56,7 @@ const getBCSInterpretation = (score) => {
   }
 }
 
-const BCSResult = ({ score, image, aiPrediction, onReset, onViewGuide }) => {
+const BCSResult = ({ score, sideImage, topImage, aiPrediction, onReset, onViewGuide }) => {
   const result = getBCSInterpretation(score)
 
   return (
@@ -79,8 +79,15 @@ const BCSResult = ({ score, image, aiPrediction, onReset, onViewGuide }) => {
           <h2>Assessment Complete</h2>
         </div>
 
-        <div className="result-image">
-          <img src={image} alt="Your dog" />
+        <div className="result-images-grid">
+          <div className="result-image-item">
+            <p className="result-image-label">Side View</p>
+            <img src={sideImage} alt="Side view" />
+          </div>
+          <div className="result-image-item">
+            <p className="result-image-label">Top View</p>
+            <img src={topImage} alt="Top view" />
+          </div>
         </div>
 
         <div className="score-display">
