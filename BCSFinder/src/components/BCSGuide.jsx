@@ -109,7 +109,7 @@ const BCSGuide = ({ onClose }) => {
         </div>
 
         <div className="guide-footer-note">
-          <h3>Remember</h3>
+          <h3>Remember me</h3>
           <p>
             Different breeds may have slightly different ideal weights and body shapes.
             Always consult with your veterinarian for personalized advice about your
