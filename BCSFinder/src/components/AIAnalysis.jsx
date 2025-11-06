@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import claudeService from '../services/claudeService'
 import './AIAnalysis.css'
 
-const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
+const AIAnalysis = ({ sideImage, topImage, onComplete, onRetake, onManualAssessment }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [prediction, setPrediction] = useState(null)
@@ -17,7 +17,8 @@ const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
         setProgress(10)
 
         console.log('Starting BCS analysis...')
-        console.log('Image data length:', image?.length)
+        console.log('Side image data length:', sideImage?.length)
+        console.log('Top image data length:', topImage?.length)
 
         // Simulate loading progress
         progressInterval = setInterval(() => {
@@ -32,9 +33,9 @@ const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
 
         setProgress(50)
 
-        // Perform prediction
+        // Perform prediction with both images
         console.log('Starting AI analysis...')
-        const result = await claudeService.predict(image)
+        const result = await claudeService.predict(sideImage, topImage)
         console.log('AI analysis complete:', result)
 
         clearInterval(progressInterval)
@@ -65,7 +66,7 @@ const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
     }
 
     analyzeBCS()
-  }, [image])
+  }, [sideImage, topImage])
 
   const handleConfirm = () => {
     onComplete(prediction.bcsScore, prediction)
@@ -106,8 +107,15 @@ const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
             </div>
           </div>
 
-          <div className="image-preview-small">
-            <img src={image} alt="Analyzing..." />
+          <div className="images-preview-grid-ai">
+            <div className="preview-small-ai">
+              <p>Side View</p>
+              <img src={sideImage} alt="Side view" />
+            </div>
+            <div className="preview-small-ai">
+              <p>Top View</p>
+              <img src={topImage} alt="Top view" />
+            </div>
           </div>
         </div>
       </div>
@@ -123,8 +131,15 @@ const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
             <h2>Analysis Failed</h2>
             <p>{error}</p>
 
-            <div className="image-preview-small">
-              <img src={image} alt="Failed analysis" />
+            <div className="images-preview-grid-ai">
+              <div className="preview-small-ai">
+                <p>Side View</p>
+                <img src={sideImage} alt="Side view" />
+              </div>
+              <div className="preview-small-ai">
+                <p>Top View</p>
+                <img src={topImage} alt="Top view" />
+              </div>
             </div>
 
             <div className="error-actions">
@@ -154,13 +169,20 @@ const AIAnalysis = ({ image, onComplete, onRetake, onManualAssessment }) => {
           </button>
         </div>
 
-        <div className="image-preview-main">
-          <img src={image} alt="Your dog" />
-          {prediction.analysis.isDogDetected && (
-            <div className="detection-badge">
-              ✓ Dog Detected
-            </div>
-          )}
+        <div className="images-preview-main-grid">
+          <div className="preview-main-item">
+            <p className="preview-main-label">Side View</p>
+            <img src={sideImage} alt="Side view" />
+          </div>
+          <div className="preview-main-item">
+            <p className="preview-main-label">Top View</p>
+            <img src={topImage} alt="Top view" />
+            {prediction.analysis.isDogDetected && (
+              <div className="detection-badge">
+                ✓ Dog Detected
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="prediction-summary">

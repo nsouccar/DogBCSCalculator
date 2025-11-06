@@ -2,20 +2,25 @@ import { useState, useRef, useEffect } from 'react'
 import './CameraCapture.css'
 
 const CameraCapture = ({ onCapture, onCancel }) => {
+  const [step, setStep] = useState(1) // 1 = side photo, 2 = top photo
   const [stream, setStream] = useState(null)
-  const [capturedImage, setCapturedImage] = useState(null)
+  const [sideImage, setSideImage] = useState(null)
+  const [topImage, setTopImage] = useState(null)
+  const [currentCapture, setCurrentCapture] = useState(null)
   const [error, setError] = useState(null)
-  const [facingMode, setFacingMode] = useState('environment') // 'user' or 'environment'
+  const [facingMode, setFacingMode] = useState('environment')
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   const fileInputRef = useRef(null)
 
   useEffect(() => {
-    startCamera()
+    if (!currentCapture) {
+      startCamera()
+    }
     return () => {
       stopCamera()
     }
-  }, [facingMode])
+  }, [facingMode, currentCapture])
 
   const startCamera = async () => {
     try {
@@ -57,21 +62,29 @@ const CameraCapture = ({ onCapture, onCancel }) => {
     context.drawImage(video, 0, 0, canvas.width, canvas.height)
 
     const imageData = canvas.toDataURL('image/jpeg', 0.9)
-    setCapturedImage(imageData)
+    setCurrentCapture(imageData)
   }
 
   const retake = () => {
-    setCapturedImage(null)
+    setCurrentCapture(null)
   }
 
   const confirmCapture = () => {
-    stopCamera()
-    onCapture(capturedImage)
+    if (step === 1) {
+      setSideImage(currentCapture)
+      setCurrentCapture(null)
+      setStep(2)
+    } else {
+      setTopImage(currentCapture)
+      stopCamera()
+      // Both images captured, pass them up
+      onCapture(sideImage, currentCapture)
+    }
   }
 
   const switchCamera = () => {
     setFacingMode(prev => prev === 'user' ? 'environment' : 'user')
-    setCapturedImage(null)
+    setCurrentCapture(null)
   }
 
   const handleCancel = () => {
@@ -83,20 +96,17 @@ const CameraCapture = ({ onCapture, onCancel }) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       setError('Please select an image file')
       return
     }
 
-    // Stop camera if running
     stopCamera()
 
-    // Read file and convert to base64
     const reader = new FileReader()
     reader.onload = (e) => {
       const imageData = e.target.result
-      setCapturedImage(imageData)
+      setCurrentCapture(imageData)
       setError(null)
     }
     reader.onerror = () => {
@@ -109,8 +119,45 @@ const CameraCapture = ({ onCapture, onCancel }) => {
     fileInputRef.current?.click()
   }
 
+  const goBackStep = () => {
+    if (step === 2) {
+      setStep(1)
+      setCurrentCapture(null)
+      setSideImage(null)
+    }
+  }
+
+  const getInstructions = () => {
+    if (step === 1) {
+      return {
+        title: 'Step 1: Side Profile',
+        description: 'Position yourself to the side of your dog',
+        tip: 'Capture their full body from shoulder to tail'
+      }
+    } else {
+      return {
+        title: 'Step 2: Top View',
+        description: 'Stand above your dog looking down',
+        tip: 'Capture from directly overhead showing their back and waist'
+      }
+    }
+  }
+
+  const instructions = getInstructions()
+
   return (
     <div className="camera-capture">
+      <div className="step-indicator">
+        <div className={`step-dot ${step >= 1 ? 'active' : ''}`}>1</div>
+        <div className="step-line"></div>
+        <div className={`step-dot ${step >= 2 ? 'active' : ''}`}>2</div>
+      </div>
+
+      <div className="step-title">
+        <h2>{instructions.title}</h2>
+        <p>{instructions.description}</p>
+      </div>
+
       <div className="camera-container">
         {error && (
           <div className="error-message">
@@ -119,7 +166,7 @@ const CameraCapture = ({ onCapture, onCancel }) => {
           </div>
         )}
 
-        {!error && !capturedImage && (
+        {!error && !currentCapture && (
           <>
             <video
               ref={videoRef}
@@ -129,16 +176,16 @@ const CameraCapture = ({ onCapture, onCancel }) => {
             />
             <div className="camera-overlay">
               <div className="camera-guide">
-                <p>Position your dog in the frame</p>
-                <p className="camera-tip">Take a side view photo for best results</p>
+                <p>{instructions.description}</p>
+                <p className="camera-tip">{instructions.tip}</p>
               </div>
             </div>
           </>
         )}
 
-        {capturedImage && (
+        {currentCapture && (
           <div className="preview-container">
-            <img src={capturedImage} alt="Captured" className="captured-image" />
+            <img src={currentCapture} alt="Captured" className="captured-image" />
             <p className="preview-text">Does this photo look good?</p>
           </div>
         )}
@@ -147,14 +194,20 @@ const CameraCapture = ({ onCapture, onCancel }) => {
       </div>
 
       <div className="camera-controls">
-        {!capturedImage ? (
+        {!currentCapture ? (
           <>
-            <button onClick={handleCancel} className="outline">
-              Cancel
-            </button>
+            {step === 2 ? (
+              <button onClick={goBackStep} className="outline">
+                ← Back
+              </button>
+            ) : (
+              <button onClick={handleCancel} className="outline">
+                Cancel
+              </button>
+            )}
             <button onClick={capturePhoto} className="capture-button">
               <span className="capture-icon">📷</span>
-              Capture Photo
+              Capture
             </button>
             <button onClick={switchCamera} className="outline">
               <span>🔄</span>
@@ -167,7 +220,7 @@ const CameraCapture = ({ onCapture, onCancel }) => {
               Retake
             </button>
             <button onClick={confirmCapture} className="primary-button">
-              Use This Photo
+              {step === 1 ? 'Next: Top View' : 'Finish'}
             </button>
           </>
         )}
@@ -179,7 +232,7 @@ const CameraCapture = ({ onCapture, onCancel }) => {
         </div>
         <button onClick={triggerFileUpload} className="upload-button outline">
           <span>📁</span>
-          Upload Photo from Device
+          Upload {step === 1 ? 'Side' : 'Top'} Photo
         </button>
         <input
           ref={fileInputRef}
@@ -189,6 +242,12 @@ const CameraCapture = ({ onCapture, onCancel }) => {
           style={{ display: 'none' }}
         />
       </div>
+
+      {sideImage && step === 2 && (
+        <div className="completed-photo">
+          <p>✓ Side photo captured</p>
+        </div>
+      )}
     </div>
   )
 }
